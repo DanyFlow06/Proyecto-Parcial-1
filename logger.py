@@ -28,7 +28,8 @@ if not logger.handlers:
     console_handler.setFormatter(formatter)
     logger.addHandler(console_handler)
 
- # FUNCIONES PARA REGISTRAR LOGS PERSONALIZADOS, MANDARLAS A LLAMAR CUANDO SE QUIERA REGISTRAR UNA ACCION
+ # FUNCIONES PARA REGISTRAR LOGS PERSONALIZADOS
+ # MANDARLAS A LLAMAR CUANDO SE QUIERA REGISTRAR UNA ACCION
 
 def log_info(msg: str) -> None:
     """Registra un mensaje de nivel INFO."""
