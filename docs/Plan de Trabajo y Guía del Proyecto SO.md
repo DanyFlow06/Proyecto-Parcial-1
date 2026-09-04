@@ -41,6 +41,45 @@ graph TD
 | **Manejo de Interbloqueos** | **Algoritmo del Banquero (Evasión)** | Evalúa si conceder una solicitud mantiene un *Estado Seguro*. En caso contrario, el proceso se encola temporalmente. |
 | **Arquitectura de Código** | **Paquete Modular `managers/`** | Separación estricta entre administradores de recursos (`managers/`) y motores de simulación/visualización en la raíz. |
 | **Flujo en Git / GitHub** | **Pull Requests (PR) & Code Review** | Trabajo en ramas `feature/nombre-tarea`. Fusión a `main` supervisada por Uriel con aprobación previa de un compañero. |
+ ## 👥 Flujo de Trabajo para los desarrolladores
+
+  Cada integrante debe seguir estos 5 pasos para cualquier tarea nueva:
+
+  ### 1. Actualizar main local y crear su rama de trabajo
+
+    # 1. Cambiar a la rama main
+    git checkout main
+
+    # 2. Descargar los últimos cambios del repositorio
+    git pull origin main
+
+    # 3. Crear y cambiar a su propia rama de feature
+    git checkout -b feature/nombre-tarea
+    # Ejemplo: git checkout -b feature/file-manager
+
+  ### 2. Hacer cambios y guardar commits
+
+    # Ver los archivos modificados
+    git status
+
+    # Agregar los cambios al área de preparación
+    git add .
+
+    # Crear el commit con un mensaje claro
+    git commit -m "feat: implementarFileManager en managers/file_manager.py"
+
+  ### 3. Subir la rama a GitHub
+
+    # Subir la rama por primera vez a GitHub
+    git push -u origin feature/nombre-tarea
+
+  ### 4. Abrir el Pull Request (PR) en GitHub
+
+  1. Ir al repositorio en GitHub: DanyFlow06/Proyecto-Parcial-1 https://github.com/DanyFlow06/Proyecto-Parcial-1.
+  2. Aparecerá un botón amarillo: Compare & pull request. Haz clic en él.
+  3. En el título pon un resumen (ejemplo: feat: Agregar administrador de archivos virtuales).
+  4. IMPORTANTE (Asignar Revisor): En la columna derecha en Reviewers, seleccionar a Uriel (DanyFlow06).
+  5. Hacer clic en Create pull request.
 
 ---
 
