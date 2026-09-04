@@ -78,8 +78,9 @@ graph TD
   1. Ir al repositorio en GitHub: DanyFlow06/Proyecto-Parcial-1 https://github.com/DanyFlow06/Proyecto-Parcial-1.
   2. Aparecerá un botón amarillo: Compare & pull request. Haz clic en él.
   3. En el título pon un resumen (ejemplo: feat: Agregar administrador de archivos virtuales).
-  4. IMPORTANTE (Asignar Revisor): En la columna derecha en Reviewers, seleccionar a Uriel (DanyFlow06).
+  4. IMPORTANTE (Asignar Revisor): En la columna derecha en Reviewers, seleccionar a Uriel (xLegitGhost)
   5. Hacer clic en Create pull request.
+  6. Esperar que Uriel revise tú codigo, lo apruebe y lo junte con el código principal (main)
 
 ---
 
