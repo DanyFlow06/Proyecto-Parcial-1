@@ -1,0 +1,16 @@
+# Cache de Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Entornos virtuales
+venv/
+.venv/
+env/
+
+# Archivos de logs generados por la simulación
+logs/*.log
+
+# IDEs y editores
+.vscode/
+.idea/
