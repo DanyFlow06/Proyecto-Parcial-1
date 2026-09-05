@@ -1,3 +1,6 @@
+from logger import log_info, log_warning, log_error
+
+
 class FileManager:
     def __init__(self):
         # Diccionario principal: { filename: {"content": str, "owner_pid": int | None} }
@@ -38,19 +41,26 @@ class FileManager:
                 ok, err = self._check_lock(filename, pid)
                 if not ok:
                     self.failed_operations += 1
+                    log_warning(err)
                     return err
+                msg = f"[ERROR] El archivo '{filename}' ya existe. Operación cancelada."
                 self.failed_operations += 1
-                return f"[ERROR] El archivo '{filename}' ya existe. Operación cancelada."
+                log_warning(msg)
+                return msg
 
             # Crear el archivo y asignarlo al proceso creador
             self.filesystem[filename] = {"content": "", "owner_pid": pid}
             self.file_locks[filename] = pid
 
-            return f"[OK] Archivo '{filename}' creado exitosamente por PID={pid}."
+            msg = f"[OK] Archivo '{filename}' creado exitosamente por PID={pid}."
+            log_info(msg)
+            return msg
 
         except Exception as e:
             self.failed_operations += 1
-            return f"[EXCEPCIÓN] create_file falló de forma inesperada: {e}"
+            msg = f"[EXCEPCIÓN] create_file falló de forma inesperada: {e}"
+            log_error(msg)
+            return msg
 
     # ── 2. read_file ───────────────────────────────────────────────────────────
     def read_file(self, filename, pid):
@@ -63,21 +73,28 @@ class FileManager:
             self.total_operations += 1
 
             if filename not in self.filesystem:
+                msg = f"[ERROR] El archivo '{filename}' no existe."
                 self.failed_operations += 1
-                return f"[ERROR] El archivo '{filename}' no existe."
+                log_warning(msg)
+                return msg
 
             ok, err = self._check_lock(filename, pid)
             if not ok:
                 self.failed_operations += 1
+                log_warning(err)
                 return err
 
             content = self.filesystem[filename]["content"]
-            preview = content if content else "<vacío>"
-            return f"[OK] PID={pid} leyó '{filename}': {preview}"
+            preview = content if content else "<vacio>"
+            msg = f"[OK] PID={pid} leyó '{filename}': {preview}"
+            log_info(msg)
+            return msg
 
         except Exception as e:
             self.failed_operations += 1
-            return f"[EXCEPCIÓN] read_file falló de forma inesperada: {e}"
+            msg = f"[EXCEPCIÓN] read_file falló de forma inesperada: {e}"
+            log_error(msg)
+            return msg
 
     # ── 3. write_file ──────────────────────────────────────────────────────────
     def write_file(self, filename, pid, content=""):
@@ -91,12 +108,15 @@ class FileManager:
             self.total_operations += 1
 
             if filename not in self.filesystem:
+                msg = f"[ERROR] El archivo '{filename}' no existe. Créalo primero."
                 self.failed_operations += 1
-                return f"[ERROR] El archivo '{filename}' no existe. Créalo primero."
+                log_warning(msg)
+                return msg
 
             ok, err = self._check_lock(filename, pid)
             if not ok:
                 self.failed_operations += 1
+                log_warning(err)
                 return err
 
             # Adquirir bloqueo exclusivo y escribir
@@ -104,11 +124,15 @@ class FileManager:
             self.filesystem[filename]["content"] += content
             self.filesystem[filename]["owner_pid"] = pid
 
-            return f"[OK] PID={pid} escribió en '{filename}'. Contenido actual: '{self.filesystem[filename]['content']}'"
+            msg = f"[OK] PID={pid} escribió en '{filename}'. Contenido actual: '{self.filesystem[filename]['content']}'"
+            log_info(msg)
+            return msg
 
         except Exception as e:
             self.failed_operations += 1
-            return f"[EXCEPCIÓN] write_file falló de forma inesperada: {e}"
+            msg = f"[EXCEPCIÓN] write_file falló de forma inesperada: {e}"
+            log_error(msg)
+            return msg
 
     # ── 4. move_file ───────────────────────────────────────────────────────────
     def move_file(self, old_name, new_name, pid):
@@ -121,32 +145,42 @@ class FileManager:
             self.total_operations += 1
 
             if old_name not in self.filesystem:
+                msg = f"[ERROR] El archivo origen '{old_name}' no existe."
                 self.failed_operations += 1
-                return f"[ERROR] El archivo origen '{old_name}' no existe."
+                log_warning(msg)
+                return msg
 
             ok, err = self._check_lock(old_name, pid)
             if not ok:
                 self.failed_operations += 1
+                log_warning(err)
                 return err
 
             if new_name in self.filesystem:
                 ok2, err2 = self._check_lock(new_name, pid)
                 if not ok2:
                     self.failed_operations += 1
+                    log_warning(err2)
                     return err2
+                msg = f"[ERROR] Ya existe un archivo con el nombre '{new_name}'. Elige otro nombre."
                 self.failed_operations += 1
-                return f"[ERROR] Ya existe un archivo con el nombre '{new_name}'. Elige otro nombre."
+                log_warning(msg)
+                return msg
 
             # Trasladar contenido y bloqueos al nuevo nombre
             self.filesystem[new_name] = self.filesystem.pop(old_name)
             self.file_locks[new_name] = self.file_locks.pop(old_name, pid)
             self.filesystem[new_name]["owner_pid"] = pid
 
-            return f"[OK] PID={pid} movio/renombro '{old_name}' -> '{new_name}'."
+            msg = f"[OK] PID={pid} movio/renombro '{old_name}' -> '{new_name}'."
+            log_info(msg)
+            return msg
 
         except Exception as e:
             self.failed_operations += 1
-            return f"[EXCEPCIÓN] move_file falló de forma inesperada: {e}"
+            msg = f"[EXCEPCIÓN] move_file falló de forma inesperada: {e}"
+            log_error(msg)
+            return msg
 
     # ── 5. delete_file ─────────────────────────────────────────────────────────
     def delete_file(self, filename, pid):
@@ -158,22 +192,29 @@ class FileManager:
             self.total_operations += 1
 
             if filename not in self.filesystem:
+                msg = f"[ERROR] El archivo '{filename}' no existe."
                 self.failed_operations += 1
-                return f"[ERROR] El archivo '{filename}' no existe."
+                log_warning(msg)
+                return msg
 
             ok, err = self._check_lock(filename, pid)
             if not ok:
                 self.failed_operations += 1
+                log_warning(err)
                 return err
 
             del self.filesystem[filename]
             self.file_locks.pop(filename, None)
 
-            return f"[OK] PID={pid} eliminó el archivo '{filename}' correctamente."
+            msg = f"[OK] PID={pid} eliminó el archivo '{filename}' correctamente."
+            log_info(msg)
+            return msg
 
         except Exception as e:
             self.failed_operations += 1
-            return f"[EXCEPCIÓN] delete_file falló de forma inesperada: {e}"
+            msg = f"[EXCEPCIÓN] delete_file falló de forma inesperada: {e}"
+            log_error(msg)
+            return msg
 
     # ── Método auxiliar: liberar bloqueo manualmente ───────────────────────────
     def release_file(self, filename, pid):
@@ -182,21 +223,43 @@ class FileManager:
         Útil para simular el cierre de un archivo por parte del proceso.
         """
         try:
+            self.total_operations += 1
+
             if filename not in self.filesystem:
-                return f"[ERROR] El archivo '{filename}' no existe."
+                msg = f"[ERROR] El archivo '{filename}' no existe."
+                self.failed_operations += 1
+                log_warning(msg)
+                return msg
 
             holder = self.file_locks.get(filename)
+
+            # Archivo sin bloqueo activo
+            if holder is None:
+                msg = f"[ERROR] El archivo '{filename}' no tiene ningún bloqueo activo; no hay nada que liberar."
+                self.failed_operations += 1
+                log_warning(msg)
+                return msg
+
+            # El pid solicitante no es el propietario actual
             if holder != pid:
-                return (
+                msg = (
                     f"[ERROR] PID={pid} no puede liberar '{filename}' "
                     f"porque no es su propietario actual (propietario: PID={holder})."
                 )
+                self.failed_operations += 1
+                log_warning(msg)
+                return msg
 
             self.file_locks.pop(filename, None)
-            return f"[OK] PID={pid} liberó el bloqueo sobre '{filename}'."
+            msg = f"[OK] PID={pid} liberó el bloqueo sobre '{filename}'."
+            log_info(msg)
+            return msg
 
         except Exception as e:
-            return f"[EXCEPCIÓN] release_file falló de forma inesperada: {e}"
+            self.failed_operations += 1
+            msg = f"[EXCEPCIÓN] release_file falló de forma inesperada: {e}"
+            log_error(msg)
+            return msg
 
     # ── Método auxiliar: estado general del sistema ────────────────────────────
     def get_status(self):
