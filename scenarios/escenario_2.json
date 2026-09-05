@@ -1,0 +1,39 @@
+{
+  "total_memory": 1024,
+  "resources": [
+    { "name": "Impresora_1", "type": "exclusive" },
+    { "name": "Scanner_1", "type": "exclusive" },
+    { "name": "Disco_Virtual", "type": "shared", "units": 2 }
+  ],
+  "processes": [
+    {
+      "pid": "P1",
+      "memory_required": 300,
+      "instructions": [
+        { "step": 1, "action": "request_resource", "resource": "Impresora_1" },
+        { "step": 2, "action": "create_file", "file": "doc_p1.txt" },
+        { "step": 3, "action": "write_file", "file": "doc_p1.txt" },
+        { "step": 4, "action": "release_resource", "resource": "Impresora_1" }
+      ]
+    },
+    {
+      "pid": "P2",
+      "memory_required": 256,
+      "instructions": [
+        { "step": 1, "action": "request_resource", "resource": "Impresora_1" },
+        { "step": 2, "action": "create_file", "file": "doc_p2.txt" },
+        { "step": 3, "action": "write_file", "file": "doc_p2.txt" },
+        { "step": 4, "action": "release_resource", "resource": "Impresora_1" }
+      ]
+    },
+    {
+      "pid": "P3",
+      "memory_required": 200,
+      "instructions": [
+        { "step": 1, "action": "request_resource", "resource": "Scanner_1" },
+        { "step": 2, "action": "create_file", "file": "scan_result.txt" },
+        { "step": 3, "action": "release_resource", "resource": "Scanner_1" }
+      ]
+    }
+  ]
+}

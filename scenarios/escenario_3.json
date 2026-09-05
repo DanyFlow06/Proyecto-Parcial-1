@@ -1,0 +1,31 @@
+{
+  "total_memory": 512,
+  "resources": [
+    { "name": "Recurso_A", "type": "exclusive" },
+    { "name": "Recurso_B", "type": "exclusive" }
+  ],
+  "processes": [
+    {
+      "pid": "Proceso_Alpha",
+      "memory_required": 128,
+      "instructions": [
+        { "step": 1, "action": "request_resource", "resource": "Recurso_A" },
+        { "step": 2, "action": "create_file", "file": "archivo_alpha.txt" },
+        { "step": 3, "action": "request_resource", "resource": "Recurso_B" },
+        { "step": 4, "action": "release_resource", "resource": "Recurso_A" },
+        { "step": 5, "action": "release_resource", "resource": "Recurso_B" }
+      ]
+    },
+    {
+      "pid": "Proceso_Beta",
+      "memory_required": 128,
+      "instructions": [
+        { "step": 1, "action": "request_resource", "resource": "Recurso_B" },
+        { "step": 2, "action": "create_file", "file": "archivo_beta.txt" },
+        { "step": 3, "action": "request_resource", "resource": "Recurso_A" },
+        { "step": 4, "action": "release_resource", "resource": "Recurso_B" },
+        { "step": 5, "action": "release_resource", "resource": "Recurso_A" }
+      ]
+    }
+  ]
+}
