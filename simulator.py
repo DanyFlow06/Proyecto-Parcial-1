@@ -52,7 +52,7 @@ class Simulator:
                     process = Process(
                         pid=p_data["pid"],
                         memory_required=p_data["memory_required"],
-                        pending_actions=p_data["instructions"]
+                        instructions=p_data["instructions"]
                     )
                     self.processes.append(process)
                     self.metrics["procesos_totales"] += 1
@@ -82,7 +82,7 @@ class Simulator:
         # Procesa una sola instrucción, pausa el sistema y espera al usuario.
         for process in self.processes:
             state = process.state if hasattr(process, 'state') else process.get("state", "ACTIVO_O_LISTO")
-            pending = process.pending_actions if hasattr(process, 'pending_actions') else process.get("instructions", [])
+            pending = process.instructions if hasattr(process, 'instructions') else process.get("instructions", [])
             pid = process.pid if hasattr(process, 'pid') else process.get("pid")
             
             if state == "ACTIVO_O_LISTO" and pending:
@@ -118,7 +118,7 @@ class Simulator:
             made_progress = False
             for process in self.processes:
                 state = process.state if hasattr(process, 'state') else process.get("state", "ACTIVO_O_LISTO")
-                pending = process.pending_actions if hasattr(process, 'pending_actions') else process.get("instructions", [])
+                pending = process.instructions if hasattr(process, 'instructions') else process.get("instructions", [])
                 
                 if state == "ACTIVO_O_LISTO" and pending:
                     action = pending.pop(0)
