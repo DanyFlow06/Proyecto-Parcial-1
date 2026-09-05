@@ -1,0 +1,50 @@
+{
+  "total_memory": 768,
+  "resources": [
+    { "name": "Dispositivo_X", "type": "exclusive" },
+    { "name": "Dispositivo_Y", "type": "exclusive" },
+    { "name": "Canal_IO", "type": "shared", "units": 3 }
+  ],
+  "processes": [
+    {
+      "pid": "Tarea_1",
+      "memory_required": 200,
+      "instructions": [
+        { "step": 1, "action": "request_resource", "resource": "Dispositivo_X" },
+        { "step": 2, "action": "request_resource", "resource": "Canal_IO" },
+        { "step": 3, "action": "create_file", "file": "log_tarea1.txt" },
+        { "step": 4, "action": "write_file", "file": "log_tarea1.txt" },
+        { "step": 5, "action": "release_resource", "resource": "Canal_IO" },
+        { "step": 6, "action": "request_resource", "resource": "Dispositivo_Y" },
+        { "step": 7, "action": "release_resource", "resource": "Dispositivo_X" },
+        { "step": 8, "action": "release_resource", "resource": "Dispositivo_Y" }
+      ]
+    },
+    {
+      "pid": "Tarea_2",
+      "memory_required": 256,
+      "instructions": [
+        { "step": 1, "action": "request_resource", "resource": "Dispositivo_Y" },
+        { "step": 2, "action": "request_resource", "resource": "Canal_IO" },
+        { "step": 3, "action": "create_file", "file": "log_tarea2.txt" },
+        { "step": 4, "action": "release_resource", "resource": "Canal_IO" },
+        { "step": 5, "action": "request_resource", "resource": "Dispositivo_X" },
+        { "step": 6, "action": "release_resource", "resource": "Dispositivo_Y" },
+        { "step": 7, "action": "release_resource", "resource": "Dispositivo_X" }
+      ]
+    },
+    {
+      "pid": "Tarea_3",
+      "memory_required": 150,
+      "instructions": [
+        { "step": 1, "action": "request_resource", "resource": "Canal_IO" },
+        { "step": 2, "action": "request_resource", "resource": "Canal_IO" },
+        { "step": 3, "action": "create_file", "file": "log_tarea3.txt" },
+        { "step": 4, "action": "write_file", "file": "log_tarea3.txt" },
+        { "step": 5, "action": "read_file", "file": "log_tarea3.txt" },
+        { "step": 6, "action": "release_resource", "resource": "Canal_IO" },
+        { "step": 7, "action": "release_resource", "resource": "Canal_IO" }
+      ]
+    }
+  ]
+}

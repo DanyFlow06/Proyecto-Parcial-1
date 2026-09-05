@@ -1,0 +1,84 @@
+{
+  "total_memory": 2048,
+  "resources": [
+    { "name": "Servidor_Impresion", "type": "exclusive" },
+    { "name": "Modulo_Escaneo", "type": "exclusive" },
+    { "name": "Bus_Datos", "type": "shared", "units": 4 },
+    { "name": "Cache_Global", "type": "shared", "units": 3 }
+  ],
+  "processes": [
+    {
+      "pid": "Worker_A",
+      "memory_required": 300,
+      "instructions": [
+        { "step": 1, "action": "request_resource", "resource": "Servidor_Impresion" },
+        { "step": 2, "action": "request_resource", "resource": "Bus_Datos" },
+        { "step": 3, "action": "create_file", "file": "salida_A.txt" },
+        { "step": 4, "action": "write_file", "file": "salida_A.txt" },
+        { "step": 5, "action": "release_resource", "resource": "Bus_Datos" },
+        { "step": 6, "action": "release_resource", "resource": "Servidor_Impresion" }
+      ]
+    },
+    {
+      "pid": "Worker_B",
+      "memory_required": 256,
+      "instructions": [
+        { "step": 1, "action": "request_resource", "resource": "Modulo_Escaneo" },
+        { "step": 2, "action": "request_resource", "resource": "Cache_Global" },
+        { "step": 3, "action": "create_file", "file": "scan_B.dat" },
+        { "step": 4, "action": "release_resource", "resource": "Cache_Global" },
+        { "step": 5, "action": "release_resource", "resource": "Modulo_Escaneo" }
+      ]
+    },
+    {
+      "pid": "Worker_C",
+      "memory_required": 350,
+      "instructions": [
+        { "step": 1, "action": "request_resource", "resource": "Bus_Datos" },
+        { "step": 2, "action": "request_resource", "resource": "Cache_Global" },
+        { "step": 3, "action": "create_file", "file": "datos_C.csv" },
+        { "step": 4, "action": "write_file", "file": "datos_C.csv" },
+        { "step": 5, "action": "read_file", "file": "datos_C.csv" },
+        { "step": 6, "action": "release_resource", "resource": "Cache_Global" },
+        { "step": 7, "action": "release_resource", "resource": "Bus_Datos" }
+      ]
+    },
+    {
+      "pid": "Worker_D",
+      "memory_required": 200,
+      "instructions": [
+        { "step": 1, "action": "request_resource", "resource": "Servidor_Impresion" },
+        { "step": 2, "action": "create_file", "file": "reporte_D.pdf" },
+        { "step": 3, "action": "write_file", "file": "reporte_D.pdf" },
+        { "step": 4, "action": "release_resource", "resource": "Servidor_Impresion" },
+        { "step": 5, "action": "request_resource", "resource": "Bus_Datos" },
+        { "step": 6, "action": "release_resource", "resource": "Bus_Datos" }
+      ]
+    },
+    {
+      "pid": "Worker_E",
+      "memory_required": 180,
+      "instructions": [
+        { "step": 1, "action": "request_resource", "resource": "Cache_Global" },
+        { "step": 2, "action": "request_resource", "resource": "Modulo_Escaneo" },
+        { "step": 3, "action": "create_file", "file": "temp_E.log" },
+        { "step": 4, "action": "write_file", "file": "temp_E.log" },
+        { "step": 5, "action": "release_resource", "resource": "Modulo_Escaneo" },
+        { "step": 6, "action": "release_resource", "resource": "Cache_Global" }
+      ]
+    },
+    {
+      "pid": "Worker_F",
+      "memory_required": 280,
+      "instructions": [
+        { "step": 1, "action": "request_resource", "resource": "Bus_Datos" },
+        { "step": 2, "action": "request_resource", "resource": "Bus_Datos" },
+        { "step": 3, "action": "create_file", "file": "batch_F.bin" },
+        { "step": 4, "action": "write_file", "file": "batch_F.bin" },
+        { "step": 5, "action": "move_file", "file": "batch_F.bin", "new_name": "batch_F_final.bin" },
+        { "step": 6, "action": "release_resource", "resource": "Bus_Datos" },
+        { "step": 7, "action": "release_resource", "resource": "Bus_Datos" }
+      ]
+    }
+  ]
+}
