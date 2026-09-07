@@ -1,0 +1,47 @@
+{
+  "total_memory": 800,
+  "resources": [
+    { "name": "GPU_Cluster_A", "type": "exclusive" },
+    { "name": "Bus_PCIe_0", "type": "exclusive" },
+    { "name": "Pool_Hilos_IO", "type": "shared", "units": 4 }
+  ],
+  "processes": [
+    {
+      "pid": "Worker_Quantum_77",
+      "memory_required": 220,
+      "instructions": [
+        { "step": 1, "action": "request_resource", "resource": "GPU_Cluster_A" },
+        { "step": 2, "action": "create_file", "file": "neural_weights.bin" },
+        { "step": 3, "action": "write_file", "file": "neural_weights.bin" },
+        { "step": 4, "action": "request_resource", "resource": "Pool_Hilos_IO", "units": 2 },
+        { "step": 5, "action": "release_resource", "resource": "Pool_Hilos_IO", "units": 2 },
+        { "step": 6, "action": "request_resource", "resource": "Bus_PCIe_0" },
+        { "step": 7, "action": "release_resource", "resource": "GPU_Cluster_A" },
+        { "step": 8, "action": "release_resource", "resource": "Bus_PCIe_0" }
+      ]
+    },
+    {
+      "pid": "Collector_Sensors_99",
+      "memory_required": 180,
+      "instructions": [
+        { "step": 1, "action": "request_resource", "resource": "Bus_PCIe_0" },
+        { "step": 2, "action": "create_file", "file": "telemetry.csv" },
+        { "step": 3, "action": "write_file", "file": "telemetry.csv" },
+        { "step": 4, "action": "request_resource", "resource": "Pool_Hilos_IO", "units": 2 },
+        { "step": 5, "action": "release_resource", "resource": "Pool_Hilos_IO", "units": 2 },
+        { "step": 6, "action": "release_resource", "resource": "Bus_PCIe_0" }
+      ]
+    },
+    {
+      "pid": "Daemon_Backup_X",
+      "memory_required": 150,
+      "instructions": [
+        { "step": 1, "action": "request_resource", "resource": "Pool_Hilos_IO", "units": 1 },
+        { "step": 2, "action": "read_file", "file": "telemetry.csv" },
+        { "step": 3, "action": "create_file", "file": "backup_archive.tar" },
+        { "step": 4, "action": "move_file", "file": "backup_archive.tar", "new_name": "backup_final.tar" },
+        { "step": 5, "action": "release_resource", "resource": "Pool_Hilos_IO", "units": 1 }
+      ]
+    }
+  ]
+}
